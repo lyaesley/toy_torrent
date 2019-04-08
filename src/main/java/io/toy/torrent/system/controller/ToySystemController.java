@@ -1,4 +1,4 @@
-package toy.torrent.system.controller;
+package io.toy.torrent.system.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
