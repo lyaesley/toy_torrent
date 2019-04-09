@@ -1,4 +1,4 @@
-package io.toy.torrent.core.properties;
+package io.toy.core.properties;
 
 import java.io.IOException;
 import java.util.List;

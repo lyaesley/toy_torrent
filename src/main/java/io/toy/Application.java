@@ -1,4 +1,4 @@
-package io.toy.torrent;
+package io.toy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
