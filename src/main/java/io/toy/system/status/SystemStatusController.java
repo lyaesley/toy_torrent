@@ -1,15 +1,16 @@
-package io.toy.system.controller;
+package io.toy.system.status;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("toysystem/v1")
+@RequestMapping("toy/v1/system")
 @RestController
-public class ToySystemController {
-
-	@GetMapping("/hello")
-	public String helloWorld() {
-		return "Hello World";
+public class SystemStatusController {
+	
+	@GetMapping("/health")
+	public String healthCheck() {
+		return "OK";
 	}
+
 }

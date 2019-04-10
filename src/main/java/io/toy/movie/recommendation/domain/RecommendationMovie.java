@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import io.toy.core.enumeration.Yn;
+import io.toy.common.enumeration.Yn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,7 +47,6 @@ public class RecommendationMovie {
 	private String updId;
 
 	@UpdateTimestamp
-	private LocalDateTime updDtt;
-
+	private LocalDateTime updDtt; 
 
 }

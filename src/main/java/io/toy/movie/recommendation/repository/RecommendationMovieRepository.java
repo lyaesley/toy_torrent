@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import io.toy.movie.recommendation.domain.RecommendationMovie;
 
-public interface RecommendationMovieRepository extends JpaRepository<RecommendationMovie, Long> {
+public interface RecommendationMovieRepository extends JpaRepository<RecommendationMovie, Long>{
 
 }
