@@ -1,15 +1,18 @@
 package io.toy.core.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class ApiResponse<T> {
 	
 	private String message;
 	private T result;
+	
+	public ApiResponse(String message, T result) {
+        this.message = message;
+        this.result = result;
+    }
 
 }
