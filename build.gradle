@@ -17,12 +17,25 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'io.toy-torrent'
 version = '0.0.1-SNAPSHOT'
+
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava]*.options*.encoding = 'UTF-8'
 
 repositories {
 	mavenCentral()
 }
 
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
+
+sourceSets {
+	main {
+		resources {
+			srcDirs "src/main/resources", "src/main/resources-${profile}"
+		}
+	}
+}
 
 dependencies {
 
