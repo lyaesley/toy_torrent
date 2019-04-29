@@ -1,7 +1,8 @@
 package io.toy.movie.recommendation.repository;
 
-import static org.junit.Assert.assertEquals;
-
+import io.toy.common.enumeration.Yn;
+import io.toy.movie.recommendation.domain.RecommendationMovie;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.toy.common.enumeration.Yn;
-import io.toy.movie.recommendation.domain.RecommendationMovie;
+import static org.junit.Assert.assertEquals;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -42,7 +43,7 @@ public class RecommendationMovieRepositoryTest {
 		assertEquals(recommendationMovie.getDelYn(), rsRecommendationMovie.getDelYn());
 		assertEquals(recommendationMovie.getCreId(), rsRecommendationMovie.getCreId());
 		
-		
+		log.info("test");
 	}
 
 }
