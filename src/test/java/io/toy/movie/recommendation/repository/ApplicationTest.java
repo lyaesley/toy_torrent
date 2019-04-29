@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//테스트에서 spring.profiles.active=core 를 찾아 프로퍼티를 읽어온다.
 @ActiveProfiles("core")
 @RunWith(SpringRunner.class)
 @SpringBootTest

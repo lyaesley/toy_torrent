@@ -13,9 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import io.toy.common.enumeration.Yn;
 import io.toy.movie.recommendation.domain.RecommendationMovie;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//@AutoConfigureTestDatabase(replace = Replace.NONE)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RecommendationMovieRepositoryTest {
 	
 	static {
@@ -25,7 +25,7 @@ public class RecommendationMovieRepositoryTest {
 	@Autowired
 	RecommendationMovieRepository recommendationMovieRepository;
 	
-//	@Test
+	@Test
 	public void save() {
 		
 		RecommendationMovie recommendationMovie = new RecommendationMovie();
