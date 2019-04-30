@@ -37,7 +37,7 @@ public class RecommendationMovieRestControllerTest {
 		recommendationMovie.setMovieCd("movie01");
 		recommendationMovie.setUserId("userid01");
 		recommendationMovie.setDelYn(Yn.N);
-		recommendationMovie.setCreId("QA");
+		recommendationMovie.setCreId("Q1A");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String recommendationMovieStr  = objectMapper.writeValueAsString(recommendationMovie);
