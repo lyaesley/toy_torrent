@@ -25,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "recommendation_movie")
+//@Table(name = "recommendation_movie")
 public class RecommendationMovie {
 	
 	@Id
