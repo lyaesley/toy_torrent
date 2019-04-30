@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.toy.core.domain.ApiResponse;
 import io.toy.movie.recommendation.domain.RecommendationMovie;
 import io.toy.movie.recommendation.service.RecommendationMovieService;
+import io.toy.movie.recommendation.service.dto.RecommendationMovieDto;
 
 @RequestMapping("toy/v1/movie")
 @RestController
@@ -20,9 +21,9 @@ public class RecommendationMovieRestController {
 	RecommendationMovieService recommendationMovieService;
 	
 	@PostMapping("/recommendation")
-	public ResponseEntity<Object> save(@RequestBody RecommendationMovie recommendationMovie) {
+	public ResponseEntity<Object> save(@RequestBody RecommendationMovieDto.Create recommendationMovie) {
 		
-		RecommendationMovie rsRecommendationMovie = recommendationMovieService.save(recommendationMovie);
+		RecommendationMovie rsRecommendationMovie = recommendationMovieService.save(recommendationMovie.toEntity());
 		
 		ApiResponse<RecommendationMovie> response = new ApiResponse<>("success", rsRecommendationMovie);
 

@@ -12,14 +12,12 @@ buildscript {
 
 plugins {
     id "org.asciidoctor.convert" version "1.5.9.2"
-    //id "io.franzbecker.gradle-lombok" version "2.0" apply false
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-//apply plugin: 'io.franzbecker.gradle-lombok'
 
 
 group = 'io.toy-torrent'
