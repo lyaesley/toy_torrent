@@ -17,6 +17,10 @@ import io.toy.movie.recommendation.domain.RecommendationMovie;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RecommendationMovieRepositoryTest {
+	
+	static {
+        System.setProperty("SERVICE_MODE", "dev");
+    }
 
 	@Autowired
 	RecommendationMovieRepository recommendationMovieRepository;

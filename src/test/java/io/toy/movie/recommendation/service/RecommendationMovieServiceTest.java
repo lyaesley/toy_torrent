@@ -15,12 +15,16 @@ import io.toy.movie.recommendation.domain.RecommendationMovie;
 @SpringBootTest
 public class RecommendationMovieServiceTest {
 	
+	static {
+        System.setProperty("SERVICE_MODE", "dev");
+    }
+	
 	@Autowired
 	RecommendationMovieService recommendationMovieService;
 	
 	@Test
 	public void save() {
-		//given
+		
 		RecommendationMovie recommendationMovie = new RecommendationMovie();
 		
 		recommendationMovie.setMovieCd("movie01");
@@ -28,10 +32,8 @@ public class RecommendationMovieServiceTest {
 		recommendationMovie.setDelYn(Yn.N);
 		recommendationMovie.setCreId("QA");
 		
-		//when
 		RecommendationMovie rsRecommendationMovie = recommendationMovieService.save(recommendationMovie);
 		
-		//then
 		assertEquals(recommendationMovie.getMovieCd(), rsRecommendationMovie.getMovieCd());
 		assertEquals(recommendationMovie.getUserId(), rsRecommendationMovie.getUserId());
 		assertEquals(recommendationMovie.getDelYn(), rsRecommendationMovie.getDelYn());

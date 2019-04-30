@@ -23,8 +23,12 @@ import io.toy.movie.recommendation.domain.RecommendationMovie;
 @AutoConfigureMockMvc
 public class RecommendationMovieRestControllerTest {
 	
+	static {
+        System.setProperty("SERVICE_MODE", "dev");
+    }
+	
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mvc;
 	
 	@Autowired
 	RecommendationMovieRestController recommendationMovieRestController;
@@ -37,12 +41,12 @@ public class RecommendationMovieRestControllerTest {
 		recommendationMovie.setMovieCd("movie01");
 		recommendationMovie.setUserId("userid01");
 		recommendationMovie.setDelYn(Yn.N);
-		recommendationMovie.setCreId("Q1A");
+		recommendationMovie.setCreId("QA");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String recommendationMovieStr  = objectMapper.writeValueAsString(recommendationMovie);
 		
-		mockMvc.perform(post("/toy/v1/movie/recommendation")
+		mvc.perform(post("/toy/v1/movie/recommendation")
 				.contentType(MediaType.APPLICATION_JSON)
 	 			.content(recommendationMovieStr))
 			.andDo(print())
