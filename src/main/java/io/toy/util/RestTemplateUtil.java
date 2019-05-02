@@ -1,30 +1,79 @@
 package io.toy.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.RequestEntity;
+import io.toy.system.RequestResponseLoggingInterceptor;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RestTemplateUtil {
 
-	@Value("${api.naver.movie.clientId}")
-	String API_NAVER_MOVIE_CLIENTID;
-	@Value("${api.naver.movie.clientSecret}")
-	String API_NAVER_MOVIE_CLIENTSECRET;
-	@Value("${api.naver.movie.sendUrl}")
-	String API_NAVER_MOVIE_SENDURL;
+	private URI uri;
+	private final MultiValueMap param = new LinkedMultiValueMap();
+	private final HttpHeaders headers = new HttpHeaders();
+	private final HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+	private RestTemplate restTemplate;
 
-	URI url;
-	final Map<String, String> header = new HashMap<>();
+	public RestTemplateUtil() {
+		restTemplate = new RestTemplate();
+	}
 
-	public RestTemplateUtil setHeader(String key, String val) {
-		header.put(key,val);
+	public RestTemplateUtil setUri(URI uri) {
+		this.uri = uri;
 		return this;
 	}
 
+	public RestTemplateUtil setInterceptors() {
+		this.restTemplate = new RestTemplateBuilder()
+				.interceptors(new RequestResponseLoggingInterceptor())
+				.build();
+		return this;
+	}
 
+	public RestTemplateUtil setHeader(String key, String val) {
+		this.headers.add(key,val);
+		return this;
+	}
 
+	public RestTemplateUtil setConnectTimeout(int connectTimeout) {
+		this.requestFactory.setConnectTimeout(connectTimeout);
+		return this;
+	}
+
+	public RestTemplateUtil setReadTimeout(int readTimeout) {
+		this.requestFactory.setConnectTimeout(readTimeout);
+		return this;
+	}
+
+	public RestTemplateUtil addParam(String key, String val) {
+		this.param.add(key,val);
+		return this;
+	}
+
+	public ResponseEntity get() {
+
+		ResponseEntity responseEntity = null;
+
+		if (param.size() > 0) {
+			restTemplate.setRequestFactory(requestFactory);
+			uri = UriComponentsBuilder.fromUri(uri).queryParams(param).build().encode().toUri();
+		}
+
+		try {
+			responseEntity = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return responseEntity;
+	}
 
 }
