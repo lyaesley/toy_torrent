@@ -29,10 +29,10 @@ public class RestTemplateUtilTest {
 
     @Test
     public void test() throws URISyntaxException {
-        RestTemplateUtil restTemplateUtil = new RestTemplateUtil();
-        ResponseEntity responseEntity = restTemplateUtil.setUri(new URI(API_NAVER_MOVIE_SENDURL))
-                .setReadTimeout(1)
-                .setConnectTimeout(2000)
+        RestTemplateUtil restTemplateUtil = new RestTemplateUtil(new URI(API_NAVER_MOVIE_SENDURL));
+        ResponseEntity responseEntity = restTemplateUtil
+                .setReadTimeout(3000)
+                .setConnectTimeout(3000)
                 .setHeader("X-Naver-Client-Id", API_NAVER_MOVIE_CLIENTID)
                 .setHeader("X-Naver-Client-Secret", API_NAVER_MOVIE_CLIENTSECRET)
                 .addParam("query", "어벤져스")

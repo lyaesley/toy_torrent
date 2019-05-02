@@ -22,13 +22,9 @@ public class RestTemplateUtil {
 	private final HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 	private RestTemplate restTemplate;
 
-	public RestTemplateUtil() {
+	public RestTemplateUtil(URI uri) {
 		restTemplate = new RestTemplate();
-	}
-
-	public RestTemplateUtil setUri(URI uri) {
 		this.uri = uri;
-		return this;
 	}
 
 	public RestTemplateUtil setInterceptors() {
