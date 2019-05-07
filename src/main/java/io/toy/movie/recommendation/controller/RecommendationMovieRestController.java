@@ -25,7 +25,7 @@ public class RecommendationMovieRestController {
 		
 		RecommendationMovie rsRecommendationMovie = recommendationMovieService.save(recommendationMovie.toEntity());
 		
-		ApiResponse<RecommendationMovie> response = new ApiResponse<>("success", rsRecommendationMovie);
+		ApiResponse<RecommendationMovie> response = new ApiResponse<>(HttpStatus.OK, "success", rsRecommendationMovie);
 
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 		
