@@ -36,9 +36,9 @@ public class NaverMovieApi {
           .build();
     }
 
-	public ResponseEntity<String> getMovieInfo(NaverMovie naverMovie) throws UnsupportedEncodingException {
+	public ResponseEntity<NaverMovie.Response> getMovieInfo(NaverMovie.Request naverMovie) throws UnsupportedEncodingException {
 		
-		ResponseEntity<String> result = new ResponseEntity<String>(HttpStatus.OK);
+		ResponseEntity<NaverMovie.Response> result = new ResponseEntity<NaverMovie.Response>(HttpStatus.OK);
 
 		URI builder = UriComponentsBuilder.newInstance()
 				.scheme("https").host("openapi.naver.com")
@@ -59,7 +59,7 @@ public class NaverMovieApi {
 		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 		
 		try {
-			result = restTemplate.exchange(builder, HttpMethod.GET, entity, String.class);	
+			result = restTemplate.exchange(builder, HttpMethod.GET, entity, NaverMovie.Response.class);	
 		} catch (ResourceAccessException e) {
 			//response = new ApiResponse<>("server connect fail", "server 에 연결 실패");
 			//responseEntiry = new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);

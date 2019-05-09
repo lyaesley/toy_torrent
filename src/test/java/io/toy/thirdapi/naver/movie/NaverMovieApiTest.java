@@ -27,14 +27,14 @@ public class NaverMovieApiTest {
 	@Test
 	public void getMovieInfo() throws UnsupportedEncodingException {
 		
-		NaverMovie naverMovie = new NaverMovie();
+		NaverMovie.Request naverMovie = new NaverMovie.Request();
 		
 		naverMovie.setQuery("엔드게임");
 		naverMovie.setCountry("US");
 		naverMovie.setYearfrom(2019);
 		naverMovie.setYearto(2019);
 		
-		ResponseEntity<String> movie = naverMovieApi.getMovieInfo(naverMovie);
+		ResponseEntity<NaverMovie.Response> movie = naverMovieApi.getMovieInfo(naverMovie);
 		
 		log.debug("" + movie);
 		
