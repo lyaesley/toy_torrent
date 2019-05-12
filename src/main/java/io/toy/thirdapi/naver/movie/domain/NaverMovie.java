@@ -3,7 +3,6 @@ package io.toy.thirdapi.naver.movie.domain;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class NaverMovie {
@@ -53,21 +52,19 @@ public class NaverMovie {
 	
 	@Getter
 	@Setter
-	@NoArgsConstructor
 	public static class Response {
 		
 		private String lastBuildDate;
-	    private Integer total;
-	    private Integer start;
-	    private Integer display;
-	    private List<Items> items;
+	    private int total;
+	    private int start;
+	    private int display;
+	    private List<NaverMovie.Items> items;
 		
 	}
 	
 	@Getter
 	@Setter
-	@NoArgsConstructor
-	public class Items{
+	public static class Items{
 		
 		private String title;
 		private String link;

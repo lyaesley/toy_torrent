@@ -36,7 +36,7 @@ public class NaverMovieApiTest {
 		
 		ResponseEntity<NaverMovie.Response> movie = naverMovieApi.getMovieInfo(naverMovie);
 		
-		log.debug("" + movie);
+		log.debug("response body: " + movie.getBody());
 		
 	}
 

@@ -4,13 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.time.Duration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -27,18 +28,21 @@ public class NaverMovieApi {
 	
 	private RestTemplate restTemplate;
 
-	@Autowired
     public NaverMovieApi(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder
+        this.restTemplate = restTemplateBuilder
           .setConnectTimeout(Duration.ofSeconds(5))
+          .requestFactory(() -> new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()))
+          //.additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")))
           .errorHandler(new RestTemplateResponseErrorHandler())
           .interceptors(new RequestResponseLoggingInterceptor())
           .build();
+        
+        //this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
     }
 
 	public ResponseEntity<NaverMovie.Response> getMovieInfo(NaverMovie.Request naverMovie) throws UnsupportedEncodingException {
 		
-		ResponseEntity<NaverMovie.Response> result = new ResponseEntity<NaverMovie.Response>(HttpStatus.OK);
+		ResponseEntity<NaverMovie.Response> responseEntity = new ResponseEntity<NaverMovie.Response>(HttpStatus.NOT_FOUND);
 
 		URI builder = UriComponentsBuilder.newInstance()
 				.scheme("https").host("openapi.naver.com")
@@ -55,19 +59,21 @@ public class NaverMovieApi {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-Naver-Client-Id", "GxEYANrgHRakHoImu4ck");
 		headers.add("X-Naver-Client-Secret", "ws2Lh9IBQq");
+		headers.add("Content-Type", "application/json");
 		
-		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		
+		//ParameterizedTypeReference<NaverMovie.Response> responseType = new ParameterizedTypeReference<NaverMovie.Response>() { };
 		
 		try {
-			result = restTemplate.exchange(builder, HttpMethod.GET, entity, NaverMovie.Response.class);	
+			responseEntity = restTemplate.exchange(builder, HttpMethod.GET, entity, NaverMovie.Response.class);	
 		} catch (ResourceAccessException e) {
 			//response = new ApiResponse<>("server connect fail", "server 에 연결 실패");
 			//responseEntiry = new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			log.debug("server connect fail: " + e.getCause());
 		}
 		
-		
-		return result;
+		return responseEntity;
 	}
 
 }
