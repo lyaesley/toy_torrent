@@ -36,8 +36,6 @@ public class NaverMovieApi {
           .errorHandler(new RestTemplateResponseErrorHandler())
           .interceptors(new RequestResponseLoggingInterceptor())
           .build();
-        
-        //this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
     }
 
 	public ResponseEntity<NaverMovie.Response> getMovieInfo(NaverMovie.Request naverMovie) throws UnsupportedEncodingException {
