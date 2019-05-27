@@ -2,7 +2,6 @@ package io.toy.thirdapi.naver.movie;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.time.Duration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -30,7 +29,7 @@ public class NaverMovieApi {
 
     public NaverMovieApi(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder
-          .setConnectTimeout(Duration.ofSeconds(5))
+          .setConnectTimeout(5)
           .requestFactory(() -> new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()))
           //.additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")))
           .errorHandler(new RestTemplateResponseErrorHandler())
