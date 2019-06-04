@@ -20,8 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Component
 public class S3Uploader {
-	
-	private final AmazonS3Client amazonS3Client;
+
+    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -64,5 +64,4 @@ public class S3Uploader {
 
         return Optional.empty();
     }
-
 }

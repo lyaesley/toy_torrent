@@ -18,7 +18,7 @@ public class TorrentController {
 	
 	private final S3Uploader s3Uploader;
 
-    @GetMapping
+    @GetMapping("/")
     public String index() {
         return "sample";
     }
@@ -26,7 +26,7 @@ public class TorrentController {
     @PostMapping("/upload")
     @ResponseBody
     public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
-        return s3Uploader.upload(multipartFile, "torrent");
+        return s3Uploader.upload(multipartFile, "static");
     }
 
 }
