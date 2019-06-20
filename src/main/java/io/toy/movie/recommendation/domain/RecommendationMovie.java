@@ -15,6 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import io.toy.common.enumeration.Yn;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,6 +48,14 @@ public class RecommendationMovie {
 	private String updId;
 
 	@UpdateTimestamp
-	private LocalDateTime updDtt; 
+	private LocalDateTime updDtt;
+	
+	@Builder
+	public RecommendationMovie(String movieCd, String userId) {
+		
+		this.movieCd 	= movieCd;
+		this.userId		= userId;
+		
+	}
 
 }

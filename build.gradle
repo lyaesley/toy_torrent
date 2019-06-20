@@ -1,13 +1,18 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.6.RELEASE'
+		springBootVersion = '2.1.4.RELEASE'
 	}
 	repositories {
 		mavenCentral()
+		maven { url 'https://repo.spring.io/libs-milestone'}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
+}
+
+plugins {
+    id "org.asciidoctor.convert" version "1.5.9.2"
 }
 
 apply plugin: 'java'
@@ -15,12 +20,26 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+
 group = 'io.toy-torrent'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+asciidoctor {
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
+}
+
+
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/libs-milestone'}
 }
 
 
@@ -31,10 +50,24 @@ dependencies {
 	
 	implementation('org.mariadb.jdbc:mariadb-java-client:2.2.5')
 
-	annotationProcessor("org.projectlombok:lombok")
-  	compileOnly("org.projectlombok:lombok")
-  	testImplementation("org.projectlombok:lombok")
+	annotationProcessor ('org.projectlombok:lombok:1.18.6')
+	testAnnotationProcessor ('org.projectlombok:lombok:1.18.6')
+  	implementation ('org.projectlombok:lombok:1.18.6')
+	//testImplementation("org.projectlombok:lombok:1.18.6")
+	
+	implementation('org.springframework.cloud:spring-cloud-starter-aws')
+	
+	 // handlebars
+    implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.0'
+	
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
 
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-aws:2.0.0.RC2'
+    }
 }
