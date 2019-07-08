@@ -24,6 +24,10 @@ public class AwsS3Util {
 
 	private AmazonS3 conn;
 
+	/**
+	 * 위에 @Value 의 값을 생성자에서 사용할 경우 null 이 됨  @PostConstruct 를 사용하면 Bean 생성후 init 실행함.
+	 * 대신 사용하는 곳에서 new Object(); 로는 init 되지 않고 @Autowired 를 사용해야 하는듯... 심오하다..
+ 	 */
 	@PostConstruct
 	public void init() {
 		log.info("{} / {}", ACCESSKEY, SECRETKEY);
