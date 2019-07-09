@@ -57,8 +57,7 @@ dependencies {
 	// restTemplate httpclient 사용
 	compile 'org.apache.httpcomponents:httpclient'
 
-	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
-	compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.575'
-
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.587'
 
 }
