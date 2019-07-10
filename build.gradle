@@ -63,4 +63,7 @@ dependencies {
 	// jsp viewresolver 설정시 아래 lib 필요
 	compile('org.apache.tomcat.embed:tomcat-embed-jasper')
 	compile('javax.servlet:jstl')
+
+	// devtools LiveReload 가능하게 해줌
+	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 }
