@@ -21,12 +21,14 @@
             window.vue  = new Vue({
                 el: '#torrent',
                 data : {
+                    s3List : '',
                     result : '',
                     upFiles : '',
                     fileRes : '',
                 },
-
+                /* 생성자 */
                 created : function(){
+                    this.s3List = ${s3List};
                 },
 
                 methods : {
@@ -48,7 +50,7 @@
                         }
                         console.log('--- 파일전송 시작 ---');
                         /* this.mask = true; */
-                        axios.post('/file/img/upload', formData, {
+                        axios.post('/file/s3/upload', formData, {
                             headers: {
                             'Content-Type': 'multipart/form-data'
                             }
@@ -62,7 +64,7 @@
                             console.log('--- 파일전송 종료 --- : '+response.data.length);
                             this.fileRes = response.data;
                             /* this.imgList = this.imgList.concat(this.fileRes); */
-                            /* this.imgList = (this.imgList.length == 0) ? this.fileRes : this.imgList.concat(this.fileRes); */
+                            this.s3List = (this.s3List.length == 0) ? this.fileRes : this.s3List.concat(this.fileRes);
                         })
                         .catch( function(error) {
                             console.log(error);
@@ -82,6 +84,11 @@
 	</head>
 	<body id="page-top">
 		<div id="torrent">
+            <ul>
+                <li v-for="(node, index) in s3List">
+                    <a v-bind:href="node.attachmentUrl" download> {{node.fileName}} </a>
+                </li>
+            </ul>
 
 			<input type="file" name="upFiles" id="upFiles" ref="upFiles" multiple v-on:change="handleFilesUpload()"/>
 		</div>

@@ -61,7 +61,7 @@ dependencies {
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.587'
 
 	// https://mvnrepository.com/artifact/software.amazon.awssdk/s3
-	compile group: 'software.amazon.awssdk', name: 's3', version: '2.7.2'
+//	compile group: 'software.amazon.awssdk', name: 's3', version: '2.7.2'
 
 
 	// jsp viewresolver 설정시 아래 lib 필요

@@ -7,10 +7,10 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.iterable.S3Objects;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.s3.model.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,8 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,42 +58,72 @@ public class AwsS3Util {
 		return amazonS3.listBuckets();
 	}
 
-	public void getObjectList() {
+	public List<S3Response> getObjectList() {
+
+		List<S3Response> s3ResponsesList = new ArrayList<>();
+
+
 		S3Objects.withPrefix(amazonS3, BUCKET, "torrent").forEach((S3ObjectSummary objectSummary) -> {
-			System.out.println(objectSummary.getKey());
+			S3Response s3Response = new S3Response();
+
+			s3Response.setBucketName(objectSummary.getBucketName());
+			s3Response.setFileName(objectSummary.getKey());
+			s3Response.setFileSize(objectSummary.getSize());
+			s3Response.setLastModified(objectSummary.getLastModified());
+			s3Response.setAttachmentUrl(amazonS3.getUrl(s3Response.getBucketName(), s3Response.getFileName()).toString());
+
+			s3ResponsesList.add(s3Response);
 		});
 		//S3ObjectSummarys 의 목록 은 필요할 때마다 한 번에 한 페이지 씩 느리게 가져옵니다.
 		// 이 withBatchSize(int)방법으로 페이지의 크기를 제어 할 수 있습니다 .
+
+		return s3ResponsesList;
 	}
 
-	public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+	public String upload(MultipartFile multipartFile, String s3DirName) throws IOException {
 		File uploadFile = convert(multipartFile)
 				.orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-
-		return uploadFile(uploadFile, dirName);
+		Optional<String> dirName = Optional.ofNullable(s3DirName);
+		return uploadFile(uploadFile, dirName.orElse("torrent"));
 	}
 
 	private String uploadFile(File uploadFile, String dirName) {
 		String fileName = dirName + "/" + uploadFile.getName();
-		String uoloadTorrentUrl = put(uploadFile, fileName);
+		String uoloadFileUrl = put(uploadFile, fileName);
 		removeNewFile(uploadFile);
-		return uoloadTorrentUrl;
+		return uoloadFileUrl;
 	}
 
 	private void removeNewFile(File targetFile) {
 		if(targetFile.delete()) {
-			log.info("파일이 삭제됐습니다.");
+			log.info("TEMP 파일이 삭제됐습니다.");
 		}else {
-			log.info("파일이 삭제되지 않았습니다.");
+			log.info("TEMP 파일이 삭제되지 않았습니다.");
 		}
 
 	}
 
 	private String put(File uploadFile, String fileName) {
 		amazonS3.putObject(new PutObjectRequest(BUCKET, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-		return amazonS3.getUrl(BUCKET, fileName).toString();
+
+		S3Response s3Response = new S3Response();
+		S3Object s3Objects = amazonS3.getObject(BUCKET, fileName);
+
+		s3Response.setBucketName(s3Objects.getBucketName());
+		s3Response.setFileName(s3Objects.getKey());
+		//s3Response.setFileSize(s3Objects.getSize());
+		//s3Response.setLastModified(s3Objects.getLastModified());
+		s3Response.setAttachmentUrl(amazonS3.getUrl(s3Response.getBucketName(), s3Response.getFileName()).toString());
+
+		return ConvUtil.toJsonObjectByClass(s3Response);
 	}
 
+	/*
+	private String put(File uploadFile, String fileName) {
+		amazonS3.putObject(new PutObjectRequest(BUCKET, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+		return amazonS3.getUrl(BUCKET, fileName).toString();
+	}
+	*/
 	private Optional<File> convert(MultipartFile file) throws IOException {
 		File convertFile = new File(file.getOriginalFilename());
 		if(convertFile.createNewFile()) {
@@ -104,5 +136,15 @@ public class AwsS3Util {
 		return Optional.empty();
 	}
 
+	@AllArgsConstructor // 모든 필드를 파라마미터로 가진 생성자
+	@NoArgsConstructor //파라미터가 없는 생성자
+	@Data
+	public static class S3Response {
+		private String bucketName;
+		private String fileName;
+		private long fileSize;
+		private String attachmentUrl;
+		private Date lastModified;
 
+	}
 }
