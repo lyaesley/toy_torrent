@@ -28,7 +28,7 @@
                 },
                 /* 생성자 */
                 created : function(){
-                    this.s3List = ${s3List};
+                    this.s3List = history.state == null ? ${s3List} : history.state.s3List;
                 },
 
                 methods : {
@@ -65,6 +65,8 @@
                             this.fileRes = response.data;
                             /* this.imgList = this.imgList.concat(this.fileRes); */
                             this.s3List = (this.s3List.length == 0) ? this.fileRes : this.s3List.concat(this.fileRes);
+
+                            history.pushState({s3List : this.s3List}, "", "/torrent/list");
                         })
                         .catch( function(error) {
                             console.log(error);
